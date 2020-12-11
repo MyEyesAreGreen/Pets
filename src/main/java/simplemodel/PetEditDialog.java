@@ -1,15 +1,20 @@
 package simplemodel;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.image.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class PetEditDialog {
     public Pet pet;
@@ -19,7 +24,9 @@ public class PetEditDialog {
     private Spinner<Integer> yearEdit;
     private Spinner<Integer> monthEdit;
     private TextField ownerEdit;
+    private Image image;
     public Font font;
+    public Integer fontSize = 18;
     public GridPane root;
 
     public PetEditDialog(Pet pet) {
@@ -27,18 +34,26 @@ public class PetEditDialog {
         dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("Edit pet");
+
         root = new GridPane();
         root.setAlignment(Pos.CENTER);
         root.setHgap(10);
         root.setVgap(10);
-        font = Font.font("Tahoma", FontWeight.NORMAL, 20);
+        root.setOnMouseClicked(event -> {
+            if(event.getClickCount() == 2){
+                root.setBackground(new Background(new BackgroundFill(Color.color(Math.random(), Math.random(), Math.random()), CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+        });
+        font = Font.font("Tahoma", FontWeight.NORMAL, fontSize);
+
         createComboBox();
         createNameText();
         createYearSpinner();
         createMonthSpinner();
         createOwnerText();
         createButtons();
-        Scene scene = new Scene(root, 600, 500);
+
+        Scene scene = new Scene(root, 600, 700);
         dialog.setScene(scene);
         dialog.showAndWait();
     }
@@ -48,14 +63,16 @@ public class PetEditDialog {
         typePet.setFont(font);
         root.add(typePet, 0, 0);
         typeEdit = new ComboBox<>();
-        typeEdit.setStyle("-fx-font-size: 24 pt");
+        typeEdit.setStyle("-fx-font-size: " + fontSize + " pt");
         typeEdit.getItems().addAll(
                 "Cat",
                 "Dog",
                 "Hamster",
                 "Mouse",
                 "Rabbit",
-                "Fishes"
+                "Fishes",
+                "Horse",
+                "Squirrel"
         );
         typeEdit.setValue(pet.getType());
         root.add(typeEdit, 1, 0);
@@ -66,7 +83,7 @@ public class PetEditDialog {
         namePet.setFont(font);
         root.add(namePet, 0, 1);
         nameEdit = new TextField();
-        nameEdit.setFont(Font.font(24));
+        nameEdit.setFont(font);
         nameEdit.setText(pet.getName());
         root.add(nameEdit, 1, 1);
     }
@@ -77,7 +94,7 @@ public class PetEditDialog {
         root.add(AgePet, 0, 2);
         yearEdit = new Spinner<>(0, 50, pet.getYear(), 1);
         yearEdit.setEditable(false);
-        yearEdit.setStyle("-fx-font-size: 24 pt");
+        yearEdit.setStyle("-fx-font-size: " + fontSize + " pt");
         root.add(yearEdit, 1, 2);
     }
     private void createMonthSpinner() {
@@ -86,7 +103,7 @@ public class PetEditDialog {
         root.add(AgePet, 0, 3);
         monthEdit = new Spinner<>(0, 11, pet.getMonth(), 1);
         monthEdit.setEditable(false);
-        monthEdit.setStyle("-fx-font-size: 24 pt");
+        monthEdit.setStyle("-fx-font-size: " + fontSize + " pt");
         root.add(monthEdit, 1, 3);
     }
 
@@ -95,22 +112,45 @@ public class PetEditDialog {
         ownerPet.setFont(font);
         root.add(ownerPet, 0, 4);
         ownerEdit = new TextField();
-        ownerEdit.setFont(Font.font(24));
+        ownerEdit.setFont(font);
         ownerEdit.setText(pet.getOwner());
         root.add(ownerEdit, 1, 4);
     }
 
+    private void fileDialog(Stage primaryStage) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open your pictures");
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Pictures", "*.jpg", "*.png", "*.gif", "*.bmp");
+        fileChooser.getExtensionFilters().add(filter);
+        File file = fileChooser.showOpenDialog(primaryStage);
+
+        Label imgPet = new Label("Image:");
+        imgPet.setFont(font);
+        root.add(imgPet, 0, 5);
+        image = new Image(file.toURI().toString());
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(300);
+        imageView.setFitWidth(300);
+        root.add(imageView,1,5);
+    }
+
     private void createButtons() {
         Button btnOk = new Button("Ok");
-        btnOk.setFont(Font.font(24));
-        root.add(btnOk, 0, 5);
+        btnOk.setFont(font);
+        root.add(btnOk, 0, 6);
         btnOk.setOnAction((ActionEvent e) -> {
             if (isInputValid()) handleOk();
             else message();
         });
+
+        Button btnAddImg = new Button("Add Image");
+        btnAddImg.setFont(font);
+        root.add(btnAddImg, 1, 6);
+        btnAddImg.setOnAction((ActionEvent e) -> fileDialog(dialog));
+
         Button btnCancel = new Button("Cancel");
-        btnCancel.setFont(Font.font(24));
-        root.add(btnCancel, 1, 5);
+        btnCancel.setFont(font);
+        root.add(btnCancel, 2, 6);
         btnCancel.setOnAction((ActionEvent e) -> handleCancel());
     }
 
@@ -133,6 +173,7 @@ public class PetEditDialog {
         pet.setYear(yearEdit.getValue());
         pet.setMonth(monthEdit.getValue());
         pet.setOwner(ownerEdit.getText());
+        pet.setImage(image);
         dialog.close();
     }
 

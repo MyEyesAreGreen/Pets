@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
@@ -18,17 +19,19 @@ public class Main extends Application {
 
     private VBox vBox;
     private ImageView pic;
-    private final Pet pet = new Pet("Cat","Mary",3, 4, "Nick");
+    private final Pet pet = new Pet("Squirrel","Mary",3, 4, "Nick",//);
+            new Image("file:src/main/resources/Squirrel.jpg"));
 
     private void createSceneElements(){
         ViewPet viewPet = new ViewPet(pet);
 
-        pic = new ImageView();
+        Image img = new Image("file:src/main/resources/Squirrel.jpg");
+        pic = new ImageView(img);
         pic.setFitHeight(200);
         pic.setPreserveRatio(true);
 
         vBox = new VBox();
-        vBox.setBackground(new Background(new BackgroundFill(Color.AQUAMARINE, CornerRadii.EMPTY, Insets.EMPTY)));
+        vBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(10);
         vBox.getChildren().addAll(viewPet.getPane());
@@ -41,33 +44,21 @@ public class Main extends Application {
         root.setStyle("-fx-font-size: 18 pt");
 
         createSceneElements();
-
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(createFileMenu(), createEditMenu());
-
-        SplitMenuButton menuColor = createEditColorMenu();
         createCopyImgMenu();
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(createFileMenu(), createEditMenu(), createColorMenu());
 
         root.setTop(menuBar);
         root.setCenter(vBox);
-        root.setBottom(menuColor);
+        root.setOnMouseClicked(event -> {
+            if(event.getClickCount() == 2){
+                vBox.setBackground(new Background(new BackgroundFill(Color.color(Math.random(), Math.random(), Math.random()), CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+        });
 
-        Scene scene = new Scene(root,500,300);
+        Scene scene = new Scene(root,600,700);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    public SplitMenuButton createEditColorMenu(){
-        MenuItem red = new MenuItem("Plum");
-        red.setOnAction((ActionEvent event) -> vBox.setBackground(new Background(new BackgroundFill(Color.PLUM, CornerRadii.EMPTY, Insets.EMPTY))));
-        MenuItem blue = new MenuItem("Tan");
-        blue.setOnAction((ActionEvent event) -> vBox.setBackground(new Background(new BackgroundFill(Color.TAN, CornerRadii.EMPTY, Insets.EMPTY))));
-        MenuItem green = new MenuItem("Khaki");
-        green.setOnAction((ActionEvent event) -> vBox.setBackground(new Background(new BackgroundFill(Color.KHAKI, CornerRadii.EMPTY, Insets.EMPTY))));
-        SplitMenuButton textColorMenu = new SplitMenuButton(red, blue, green);
-        textColorMenu.setText("Select color");
-        textColorMenu.setOnAction((ActionEvent event) -> vBox.setBackground(new Background(new BackgroundFill(Color.AQUAMARINE, CornerRadii.EMPTY, Insets.EMPTY))));
-        return textColorMenu;
     }
 
     public void createCopyImgMenu(){
@@ -114,8 +105,22 @@ public class Main extends Application {
         alert.setContentText("The program was developed by MyEyesAreGreen in 2020 as part of DemidOnline " +
                 "JavaFX professional development program.\n" + "It shows the main points of working with " +
                 "menus, forms, fields, and properties. It may be useful for someone.!");
-        alert.getDialogPane().setMinSize(500, 200);
+        alert.getDialogPane().setMinSize(300, 100);
         alert.showAndWait();
+    }
+
+    public Menu createColorMenu(){
+        Menu menuColor = new Menu("Color");
+        MenuItem pink = new MenuItem("Pink");
+        pink.setOnAction((ActionEvent event) -> vBox.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY))));
+        MenuItem cyan = new MenuItem("Cyan");
+        cyan.setOnAction((ActionEvent event) -> vBox.setBackground(new Background(new BackgroundFill(Color.CYAN, CornerRadii.EMPTY, Insets.EMPTY))));
+        MenuItem green = new MenuItem("Green");
+        green.setOnAction((ActionEvent event) -> vBox.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY))));
+        MenuItem grey = new MenuItem("Grey");
+        grey.setOnAction((ActionEvent event) -> vBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY))));
+        menuColor.getItems().addAll(pink, cyan, green, grey);
+        return menuColor;
     }
 
     public  static  void main (String[] args) {

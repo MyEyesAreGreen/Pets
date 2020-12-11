@@ -1,6 +1,7 @@
 package simplemodel;
 
 import javafx.beans.property.*;
+import javafx.scene.image.Image;
 
 public class Pet {
     private StringProperty type;
@@ -63,11 +64,24 @@ public class Pet {
         return ownerStringProperty().get();
     }
 
-    public Pet(String type, String name, int year, int month, String owner){
+    private ObjectProperty<Image> image;
+    public ObjectProperty<Image> imageObjectProperty(){
+        if (image == null) image = new SimpleObjectProperty<>();
+        return image;
+    }
+    public final void setImage(Image value) {
+        imageObjectProperty().set(value);
+    }
+    public final Image getImage(){
+        return imageObjectProperty().get();
+    }
+
+    public Pet(String type, String name, int year, int month, String owner, Image img){
         setName(name);
         setType(type);
         setYear(year);
         setMonth(month);
         setOwner(owner);
+        setImage(img);
     }
 }
