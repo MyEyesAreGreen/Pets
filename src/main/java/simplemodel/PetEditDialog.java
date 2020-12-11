@@ -12,15 +12,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class PetEditDialog {
-    private Pet pet;
-    private Stage dialog;
+    public Pet pet;
+    public Stage dialog;
     private ComboBox<String> typeEdit;
     private TextField nameEdit;
-    private Spinner<Double> ageEdit;
+    private Spinner<Integer> yearEdit;
+    private Spinner<Integer> monthEdit;
     private TextField ownerEdit;
-    private Font font;
-    private GridPane root;
-    private ButtonType result = ButtonType.CANCEL;
+    public Font font;
+    public GridPane root;
 
     public PetEditDialog(Pet pet) {
         this.pet = pet;
@@ -34,15 +34,14 @@ public class PetEditDialog {
         font = Font.font("Tahoma", FontWeight.NORMAL, 20);
         createComboBox();
         createNameText();
-        createSpinner();
+        createYearSpinner();
+        createMonthSpinner();
         createOwnerText();
         createButtons();
         Scene scene = new Scene(root, 600, 500);
         dialog.setScene(scene);
         dialog.showAndWait();
     }
-
-    public ButtonType getResult() { return result; }
 
     private void createComboBox() {
         Label typePet = new Label("Type:");
@@ -72,40 +71,47 @@ public class PetEditDialog {
         root.add(nameEdit, 1, 1);
     }
 
-    private void createSpinner() {
-        Label AgePet = new Label("Age:");
+    private void createYearSpinner() {
+        Label AgePet = new Label("Year:");
         AgePet.setFont(font);
         root.add(AgePet, 0, 2);
-        ageEdit = new Spinner<>(1, 100, pet.getAge(), 0.1);
-        ageEdit.setStyle("-fx-font-size: 24 pt");
-        ageEdit.setEditable(true);
-        root.add(ageEdit, 1, 2);
+        yearEdit = new Spinner<>(0, 50, pet.getYear(), 1);
+        yearEdit.setEditable(false);
+        yearEdit.setStyle("-fx-font-size: 24 pt");
+        root.add(yearEdit, 1, 2);
+    }
+    private void createMonthSpinner() {
+        Label AgePet = new Label("Month:");
+        AgePet.setFont(font);
+        root.add(AgePet, 0, 3);
+        monthEdit = new Spinner<>(0, 11, pet.getMonth(), 1);
+        monthEdit.setEditable(false);
+        monthEdit.setStyle("-fx-font-size: 24 pt");
+        root.add(monthEdit, 1, 3);
     }
 
     private void createOwnerText() {
         Label ownerPet = new Label("Owner name:");
         ownerPet.setFont(font);
-        root.add(ownerPet, 0, 3);
+        root.add(ownerPet, 0, 4);
         ownerEdit = new TextField();
         ownerEdit.setFont(Font.font(24));
         ownerEdit.setText(pet.getOwner());
-        root.add(ownerEdit, 1, 3);
+        root.add(ownerEdit, 1, 4);
     }
 
     private void createButtons() {
         Button btnOk = new Button("Ok");
         btnOk.setFont(Font.font(24));
-        root.add(btnOk, 0, 4);
+        root.add(btnOk, 0, 5);
         btnOk.setOnAction((ActionEvent e) -> {
             if (isInputValid()) handleOk();
             else message();
         });
         Button btnCancel = new Button("Cancel");
         btnCancel.setFont(Font.font(24));
-        root.add(btnCancel, 1, 4);
-        btnCancel.setOnAction((ActionEvent e) -> {
-            handleCancel();
-        });
+        root.add(btnCancel, 1, 5);
+        btnCancel.setOnAction((ActionEvent e) -> handleCancel());
     }
 
     private void message(){
@@ -122,16 +128,15 @@ public class PetEditDialog {
     }
 
     private void handleOk() {
-        pet.setType(typeEdit.getValue().toString());
+        pet.setType(typeEdit.getValue());
         pet.setName(nameEdit.getText());
-        pet.setAge(ageEdit.getValue());
+        pet.setYear(yearEdit.getValue());
+        pet.setMonth(monthEdit.getValue());
         pet.setOwner(ownerEdit.getText());
-        result = ButtonType.OK;
         dialog.close();
     }
 
     private void handleCancel() {
-        result = ButtonType.CANCEL;
         dialog.close();
     }
 }

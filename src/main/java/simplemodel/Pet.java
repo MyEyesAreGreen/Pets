@@ -1,9 +1,6 @@
 package simplemodel;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 public class Pet {
     private StringProperty type;
@@ -30,16 +27,28 @@ public class Pet {
         return nameStringProperty().get();
     }
 
-    private DoubleProperty age;
-    public DoubleProperty ageDoubleProperty() {
-        if (age == null) age = new SimpleDoubleProperty();
-        return age;
+    private IntegerProperty year;
+    public IntegerProperty yearIntegerProperty() {
+        if (year == null) year = new SimpleIntegerProperty();
+        return year;
     }
-    public final void setAge(Double value) {
-        ageDoubleProperty().set(value);
+    public final void setYear(Integer value) {
+        yearIntegerProperty().set(value);
     }
-    public final Double getAge() {
-        return ageDoubleProperty().get();
+    public final Integer getYear() {
+        return yearIntegerProperty().get();
+    }
+
+    private IntegerProperty month;
+    public IntegerProperty monthIntegerProperty() {
+        if (month == null) month = new SimpleIntegerProperty();
+        return month;
+    }
+    public final void setMonth(Integer value) {
+        monthIntegerProperty().set(value);
+    }
+    public final Integer getMonth() {
+        return monthIntegerProperty().get();
     }
 
     private StringProperty owner;
@@ -54,17 +63,11 @@ public class Pet {
         return ownerStringProperty().get();
     }
 
-
-    public Pet(String type, String name, double age, String owner){
+    public Pet(String type, String name, int year, int month, String owner){
         setName(name);
         setType(type);
-        setAge(age);
+        setYear(year);
+        setMonth(month);
         setOwner(owner);
-    }
-
-    public void increaseAge() {
-        //if ((age*100)%100==11) age=(age%10)+1;
-        //else age=age+0.1;
-        //age++;
     }
 }
