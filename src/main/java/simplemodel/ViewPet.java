@@ -74,7 +74,6 @@ public class ViewPet {
         grid.add(ownerPet, 1, 3, 3, 1);
 
         imgPet = new ImageView(pet.getImage());
-        System.out.println(pet.getImage().getUrl());
         imgPet.setFitWidth(300);
         imgPet.setFitHeight(300);
         imgPet.setVisible(true);

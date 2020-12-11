@@ -69,12 +69,8 @@ public class Pet {
         if (image == null) image = new SimpleObjectProperty<>();
         return image;
     }
-    public final void setImage(Image value) {
-        imageObjectProperty().set(value);
-    }
-    public final Image getImage(){
-        return imageObjectProperty().get();
-    }
+    public final void setImage(Image value) { imageObjectProperty().set(value); }
+    public final Image getImage() { return imageObjectProperty().get(); }
 
     public Pet(String type, String name, int year, int month, String owner, Image img){
         setName(name);

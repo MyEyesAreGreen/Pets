@@ -26,7 +26,6 @@ public class PetEditDialog {
     private TextField ownerEdit;
     private Image image;
     public Font font;
-    public Integer fontSize = 18;
     public GridPane root;
 
     public PetEditDialog(Pet pet) {
@@ -44,7 +43,7 @@ public class PetEditDialog {
                 root.setBackground(new Background(new BackgroundFill(Color.color(Math.random(), Math.random(), Math.random()), CornerRadii.EMPTY, Insets.EMPTY)));
             }
         });
-        font = Font.font("Tahoma", FontWeight.NORMAL, fontSize);
+        font = Font.font("Tahoma", FontWeight.NORMAL, 18);
 
         createComboBox();
         createNameText();
@@ -63,7 +62,7 @@ public class PetEditDialog {
         typePet.setFont(font);
         root.add(typePet, 0, 0);
         typeEdit = new ComboBox<>();
-        typeEdit.setStyle("-fx-font-size: " + fontSize + " pt");
+        typeEdit.setStyle("-fx-font-size: 18 pt");
         typeEdit.getItems().addAll(
                 "Cat",
                 "Dog",
@@ -94,7 +93,7 @@ public class PetEditDialog {
         root.add(AgePet, 0, 2);
         yearEdit = new Spinner<>(0, 50, pet.getYear(), 1);
         yearEdit.setEditable(false);
-        yearEdit.setStyle("-fx-font-size: " + fontSize + " pt");
+        yearEdit.setStyle("-fx-font-size: 18 pt");
         root.add(yearEdit, 1, 2);
     }
     private void createMonthSpinner() {
@@ -103,7 +102,7 @@ public class PetEditDialog {
         root.add(AgePet, 0, 3);
         monthEdit = new Spinner<>(0, 11, pet.getMonth(), 1);
         monthEdit.setEditable(false);
-        monthEdit.setStyle("-fx-font-size: " + fontSize + " pt");
+        monthEdit.setStyle("-fx-font-size: 18 pt");
         root.add(monthEdit, 1, 3);
     }
 

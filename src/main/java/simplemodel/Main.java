@@ -18,24 +18,8 @@ import javafx.event.ActionEvent;
 public class Main extends Application {
 
     private VBox vBox;
-    private ImageView pic;
     private final Pet pet = new Pet("Squirrel","Mary",3, 4, "Nick",//);
             new Image("file:src/main/resources/Squirrel.jpg"));
-
-    private void createSceneElements(){
-        ViewPet viewPet = new ViewPet(pet);
-
-        Image img = new Image("file:src/main/resources/Squirrel.jpg");
-        pic = new ImageView(img);
-        pic.setFitHeight(200);
-        pic.setPreserveRatio(true);
-
-        vBox = new VBox();
-        vBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setSpacing(10);
-        vBox.getChildren().addAll(viewPet.getPane());
-    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -43,7 +27,13 @@ public class Main extends Application {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-font-size: 18 pt");
 
-        createSceneElements();
+        ViewPet viewPet = new ViewPet(pet);
+        vBox = new VBox();
+        vBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(10);
+        vBox.getChildren().addAll(viewPet.getPane());
+
         createCopyImgMenu();
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(createFileMenu(), createEditMenu(), createColorMenu());
@@ -67,11 +57,11 @@ public class Main extends Application {
         cmItem1.setOnAction((ActionEvent e) ->{
             Clipboard clipboard = Clipboard.getSystemClipboard();
             ClipboardContent content = new ClipboardContent();
-            content.putImage(pic.getImage());
+            content.putImage(pet.getImage());
             clipboard.setContent(content);
         });
         cmCopyImg.getItems().add(cmItem1);
-        pic.setOnContextMenuRequested((ContextMenuEvent e) -> cmCopyImg.show(pic, e.getScreenX(), e.getScreenY()));
+        vBox.setOnContextMenuRequested((ContextMenuEvent e) -> cmCopyImg.show(vBox, e.getScreenX(), e.getScreenY()));
     }
 
     private Menu createFileMenu() {
