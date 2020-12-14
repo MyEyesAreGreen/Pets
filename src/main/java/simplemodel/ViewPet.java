@@ -7,9 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
+import javafx.scene.text.*;
 
 public class ViewPet {
     private final Pet pet;
@@ -19,7 +17,6 @@ public class ViewPet {
     private Text yearPet;
     private Text monthPet;
     private Text ownerPet;
-    private ImageView imgPet;
 
     private void createPane(){
         grid = new GridPane();
@@ -73,11 +70,10 @@ public class ViewPet {
         ownerPet.setOnMouseExited((MouseEvent me) -> ownerPet.setFill(Color.BLACK));
         grid.add(ownerPet, 1, 3, 3, 1);
 
-        imgPet = new ImageView(pet.getImage());
-        imgPet.setFitWidth(300);
-        imgPet.setFitHeight(300);
-        imgPet.setVisible(true);
-        grid.add(imgPet,0,4,4,1);
+        if (pet.getImageView() != null){
+            ImageView imgPet = pet.getImageView();
+            grid.add(imgPet,0,4,4,1);
+        }
     }
 
     private void addListenersPet(){
@@ -86,7 +82,6 @@ public class ViewPet {
         yearPet.textProperty().bind(pet.yearIntegerProperty().asString());
         monthPet.textProperty().bind(pet.monthIntegerProperty().asString());
         ownerPet.textProperty().bind(pet.ownerStringProperty());
-        imgPet.imageProperty().bind(pet.imageObjectProperty());
     }
 
     public GridPane getPane() {

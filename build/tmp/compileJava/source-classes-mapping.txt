@@ -1,8 +1,8 @@
-simplemodel/Pet.java
- simplemodel.Pet
-simplemodel/PetEditDialog.java
- simplemodel.PetEditDialog
 simplemodel/ViewPet.java
  simplemodel.ViewPet
+simplemodel/PetEditDialog.java
+ simplemodel.PetEditDialog
+simplemodel/Pet.java
+ simplemodel.Pet
 simplemodel/Main.java
  simplemodel.Main

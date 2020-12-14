@@ -1,0 +1,4 @@
+Squirrel Olivia 4 10 Nick file:src/main/resources/Squirrel.jpg
+Dog Emily 6 2 Pit
+Fish Oliver 1 2 Joe
+Horse Ivan 2 3 Sem file:src/main/resources/Horse.jpg

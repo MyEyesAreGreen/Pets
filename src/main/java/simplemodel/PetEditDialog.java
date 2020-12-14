@@ -24,9 +24,10 @@ public class PetEditDialog {
     private Spinner<Integer> yearEdit;
     private Spinner<Integer> monthEdit;
     private TextField ownerEdit;
-    private Image image;
+    private ImageView image;
     public Font font;
     public GridPane root;
+    private ButtonType result = ButtonType.CANCEL;
 
     public PetEditDialog(Pet pet) {
         this.pet = pet;
@@ -50,6 +51,7 @@ public class PetEditDialog {
         createYearSpinner();
         createMonthSpinner();
         createOwnerText();
+        createImage(pet);
         createButtons();
 
         Scene scene = new Scene(root, 600, 700);
@@ -69,7 +71,7 @@ public class PetEditDialog {
                 "Hamster",
                 "Mouse",
                 "Rabbit",
-                "Fishes",
+                "Fish",
                 "Horse",
                 "Squirrel"
         );
@@ -126,31 +128,40 @@ public class PetEditDialog {
         Label imgPet = new Label("Image:");
         imgPet.setFont(font);
         root.add(imgPet, 0, 5);
-        image = new Image(file.toURI().toString());
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(300);
-        imageView.setFitWidth(300);
-        root.add(imageView,1,5);
+        image = new ImageView(new Image(file.toURI().toString()));
+        image.setFitHeight(300);
+        image.setFitWidth(300);
+        root.add(image,1,5);
+    }
+
+    private void createImage(Pet pet){
+        if (pet.getImageView() != null) {
+            Label imgPet = new Label("Image:");
+            imgPet.setFont(font);
+            root.add(imgPet, 0, 5);
+            image = pet.getImageView();
+            root.add(image, 1, 5);
+        }
     }
 
     private void createButtons() {
         Button btnOk = new Button("Ok");
         btnOk.setFont(font);
-        root.add(btnOk, 0, 6);
         btnOk.setOnAction((ActionEvent e) -> {
             if (isInputValid()) handleOk();
             else message();
         });
+        root.add(btnOk, 0, 6);
 
         Button btnAddImg = new Button("Add Image");
         btnAddImg.setFont(font);
-        root.add(btnAddImg, 1, 6);
         btnAddImg.setOnAction((ActionEvent e) -> fileDialog(dialog));
+        root.add(btnAddImg, 1, 6);
 
         Button btnCancel = new Button("Cancel");
         btnCancel.setFont(font);
-        root.add(btnCancel, 2, 6);
         btnCancel.setOnAction((ActionEvent e) -> handleCancel());
+        root.add(btnCancel, 2, 6);
     }
 
     private void message(){
@@ -172,11 +183,15 @@ public class PetEditDialog {
         pet.setYear(yearEdit.getValue());
         pet.setMonth(monthEdit.getValue());
         pet.setOwner(ownerEdit.getText());
-        pet.setImage(image);
+        pet.setImageView(image);
+        result = ButtonType.OK;
         dialog.close();
     }
 
     private void handleCancel() {
+        result = ButtonType.CANCEL;
         dialog.close();
     }
+
+    public ButtonType getResult() { return result; }
 }
